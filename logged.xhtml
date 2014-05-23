@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr">
+	<head>
+		<title>Rasende Roboter</title>
+		<script src="/socket.io/socket.io.js"></script>
+		<script src="js/logged.js"></script>
+		<script src="/js/jquery.js"></script>
+		<script src="bootstrap/js/bootstrap.min.js"></script>
+		<script src="js/gyro.js"></script>
+		<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+		<link href="css/style.css" rel="stylesheet" type="text/css"/>
+		<link href="bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css"/>
+	</head>
+	<body onload="init()">
+<div class="container">
+<div class="row">
+	<div class="span1" id="logoSite">
+		<a href="#">
+		<img src="image/logo.png"/>
+		</a>
+	</div>
+</div>
+  <header class="row"><img src="image/slide.png"/></header>
+  <div class="row">
+	  <section class="span12">
+	  <div class="row">
+		  	<div class="span5 well">
+			    <legend class="bordureJaune">Nom de partie est : __IDGAME__</legend>
+			    <p> __STATE__ </p>
+				<input id="login" type="hidden" value="__LOGIN__"/>
+				<input id="idGame" type="hidden" value="__IDGAME__"/>
+			</div>
+			<div class="span5 well">
+				<legend class="bordureRouge">Bonjour __LOGIN__</legend>
+				<div class="modal hide" id="infos">
+					  <div class="modal-header"> <a class="close" data-dismiss="modal">×</a>
+					    <h3>Rappel !</h3>
+					  </div>
+					  <div class="modal-body">
+					    <p> Le jeu se compose d’un plateau de 16x16 cases. Une case peut être partiellement entourée par de murs (Sur le plateau peuvent se déplacer 4 robots (rouge, vert, bleu et jaune).</p>
+				          <p>Le jeu se déroule par tour, à chaque tour, une cible est tirée au sort. Cette cible est de la couleur d’un des robot, le but du tour est de trouver comment amener le robot de la couleur de la cible sur celle-ci. </p>
+				          <p>
+						   Les robots se déplacent en ligne droite le long des axes et ne peuvent changer de direction ou s'arrêter que lorsqu’ils butent contre un mur ou un autre robot.</p>
+						   <p> Il est possible de déplacer n’importe quel robot lors d’un tour (y compris s’il n’est pas de la couleur de la cible) mais il n’est pas possible de redéplacer un robot après en avoir déplacer un autre (ex : déplacer le robot rouge, puis le bleu, puis encore le rouge).
+						   </p>
+						   <p>
+							Le nombre de joueur n’est pas limité. Lorsqu’un joueur a trouvé une solution, les autres n’ont plus alors que 60 secondes pour en trouver une meilleure. A l’issue de ce temps, les solutions proposées sont présentées et la plus courte (ie avec le moins de déplacement) gagne.
+							</p>
+							<p>
+							Les règles précises du jeu sont <a href="http://fr.wikipedia.org/wiki/Ricochet_Robots">explicitées ici</a></p>
+					  </div>
+					  <div class="modal-footer"> <a class="btn btn-info" data-dismiss="modal">Fermer rappel</a> </div>
+				</div>
+				<div class="modal hide" id="infos2">
+					  <div class="modal-header"> <a class="close" data-dismiss="modal">×</a>
+					    <h3>Comment jouer !</h3>
+					  </div>
+					  <div class="modal-body">
+					  <table>
+					  <tr>
+					  <h4 style="float:left"><i class="icon-eye-open"></i> Sur ordinateur</h4>
+					  </tr>
+					  <tr>
+						 		<h5 style="float:left"><i class="icon-hand-left"></i> Grâce à la souris avec le clic </h5> 
+						</tr>
+						<tr>
+						 			<h6 style="float:left"><i class="icon-fire"></i> il suffit de cliquer sur le robot à déplacer, de sélectionner la cellule d'arrivée</h6>
+						 </tr>
+						 <tr>
+						 		<h5 style="float:left"><i class="icon-hand-up"></i> Grâce à la souris au glisser-déposer</h5>
+						 </tr>
+						 <tr>
+						 			<h6 style="float:left"><i class="icon-fire"></i> il suffit de faire glisser le robot vers la case d'arrivée</h6>
+						 </tr>
+						 <tr>
+
+								<h5 style="float:left"><i class="icon-th-large"></i> Grâce au clavier</h5>
+						</tr>
+						<tr>
+									 <h6 style="float:left"><i class="icon-fire"></i> le déplacement des robots se fait grâce aux flèches</h6>
+						</tr>
+						<tr>
+									 <h6 style="float:left"><i class="icon-fire"></i> la sélection du robot se fait grâce à la touche espace du clavier</h6>  
+						</tr>
+						<tr>
+					    <h4 style="float:left"><i class="icon-eye-open"></i> Sur tablette et smartphone</h4>
+					    </tr>
+					    <tr>
+					    		<h5 style="float:left"><i class="icon-hand-left"></i> Avec le clic </h5> 
+					   	</tr>
+					   	<tr>
+						 			<h6 style="float:left"><i class="icon-fire"></i> il suffit de cliquer sur le robot à déplacer, de sélectionner la cellule d'arrivée</h6>
+						 </tr>
+						 </table>
+					  </div>
+					  <div class="modal-footer"> <a class="btn btn-info" data-dismiss="modal">Fermer aide</a> </div>
+				</div>
+				<div class="btn-group"> 
+				   <a class="btn btn-success" data-toggle="modal" href="#infos"><i class="icon-eye-open"></i> Rappel</a> 
+				    <a class="btn btn-warning" data-toggle="modal" href="#infos2"><i class="icon-cog"></i> Comment jouer</a>
+				    <button type="submit" class="btn btn-danger" id="raz"><i class="icon-repeat"></i> Remise à zero</button> 
+				</div>
+                <p id="vainqueur"></p>
+				<p id="compteur"></p>
+			</div>
+	 </div>
+	    <div class="row">
+		    <div class="span5 well">
+				<div id="partie">
+            		<div id="Plateau"></div>
+				</div> 	
+			</div>
+			<div class="span5 well">
+				<legend class="bordureBleu">Les participants</legend>
+					 <nav>
+						<ul id="lesParticipants" />
+					</nav>
+			</div>
+		</div>
+	  </section>
+  </div>
+  <footer class="row">
+  <br/>
+    <p>M2PGI-Projet IHM</p>
+    <script src="js/recupPlateau.js"></script>
+  </footer>
+</div>
+</body>
+</html>
