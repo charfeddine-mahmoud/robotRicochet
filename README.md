@@ -13,5 +13,5 @@
   charfeddine.mahmoud@gmail.com
 * Fall Birahima (FallBirahima)
   birahimafall@gmail.com
-* Sami Amine Labed (SamiAmineLAbed)
+* Sami Amine Labed (SamiAmineLabed)
   labed.sa@gmail.com
